@@ -40,14 +40,14 @@ menu "BME680 Sensor Configuration"
         config BME680_I2C_SCL_PIN
             int "I2C SCL GPIO Pin"
             range 0 48
-            default 22
+            default 7
             help
                 GPIO pin for I2C SCL.
 
         config BME680_I2C_SDA_PIN
             int "I2C SDA GPIO Pin"
             range 0 48
-            default 21
+            default 6
             help
                 GPIO pin for I2C SDA.
 
