@@ -26,7 +26,7 @@ To use this component in your ESP-IDF project:
 
 ```bash
 cd your_project
-git clone --recursive git@github.com:Priyanshu0901/groove_bme680.git components/bme680
+git clone --recursive git@github.com:Priyanshu0901/grove_bme680.git components/bme680
 ```
 
 If you've already cloned the repository without the `--recursive` flag, you can initialize the submodule with:
