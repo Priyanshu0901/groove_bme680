@@ -9,6 +9,7 @@ This is an ESP-IDF component for the Bosch BME680 environmental sensor, which me
 - Configurable IIR filter settings
 - Configurable gas heater temperature and duration
 - Simple API for reading sensor data
+- Robust error handling and recovery mechanisms
 
 ## Dependencies
 
@@ -25,7 +26,13 @@ To use this component in your ESP-IDF project:
 
 ```bash
 cd your_project
-git submodule add https://github.com/yourusername/bme680_component components/bme680
+git clone --recursive git@github.com:Priyanshu0901/groove_bme680.git components/bme680
+```
+
+If you've already cloned the repository without the `--recursive` flag, you can initialize the submodule with:
+
+```bash
+cd components/bme680
 git submodule update --init --recursive
 ```
 
@@ -63,6 +70,9 @@ void app_main(void)
         return;
     }
     
+    // Wait for sensor to stabilize after initialization
+    vTaskDelay(pdMS_TO_TICKS(1000));
+    
     // Read sensor data
     bme680_data_t data;
     ret = bme680_read_data(&data);
@@ -77,6 +87,18 @@ void app_main(void)
     bme680_deinit();
 }
 ```
+
+For a more complete example, see the `examples/bme680_example.c` file.
+
+## Troubleshooting
+
+### Common Issues
+
+1. **No new data available error**: The BME680 sensor needs some time to stabilize after initialization and between measurements. Make sure to add appropriate delays after initialization (at least 1 second) and ensure the read operation waits for the measurement to complete.
+
+2. **Communication failures**: Check your wiring and make sure the I2C/SPI bus is properly set up. The default I2C address is 0x76.
+
+3. **First reading fails, subsequent readings succeed**: This is a common behavior with the BME680 sensor. The example code includes retries for the first reading.
 
 ## API Reference
 
@@ -125,7 +147,7 @@ typedef struct {
 
 ## License
 
-This component is licensed under the BSD-3-Clause license.
+This component is licensed under the MIT License.
 
 ## Acknowledgements
 

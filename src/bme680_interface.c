@@ -6,7 +6,7 @@
  * the BME680 sensor (I2C and SPI).
  *
  * @copyright Copyright (c) 2024
- * @license BSD-3-Clause
+ * @license MIT
  */
 
 #include "bme680_interface.h"

@@ -1,6 +1,10 @@
 name: "Priyanshu0901/groove_bme680"
 version: "1.0.0"
-description: "A reusable ESP-IDF component for Groove bme680 sensor"
+description: "ESP-IDF component for BME680 environmental sensor (temperature, pressure, humidity, gas)"
+license: "MIT"
+repository: "https://github.com/Priyanshu0901/groove_bme680.git"
+dependencies:
+  idf: ">=5.0.0"
 targets:
   - esp32
   - esp32c2

@@ -6,7 +6,7 @@
  * temperature, pressure, humidity and gas resistance measurements.
  * 
  * @copyright Copyright (c) 2024
- * @license BSD-3-Clause
+ * @license MIT
  */
 
 #ifndef _BME680_ESP_H_

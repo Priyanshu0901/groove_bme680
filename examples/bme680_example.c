@@ -6,7 +6,7 @@
  * It reads sensor data periodically and prints it to the console.
  * 
  * @copyright Copyright (c) 2024
- * @license BSD-3-Clause
+ * @license MIT
  */
 
 #include <stdio.h>

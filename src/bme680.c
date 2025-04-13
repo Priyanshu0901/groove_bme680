@@ -5,7 +5,7 @@
  * This file contains the ESP-IDF component implementation for the BME680 sensor.
  *
  * @copyright Copyright (c) 2024
- * @license BSD-3-Clause
+ * @license MIT
  */
 
 #include "bme680.h"
