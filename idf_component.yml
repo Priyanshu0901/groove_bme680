@@ -1,0 +1,9 @@
+name: "Priyanshu0901/groove_bme680"
+version: "1.0.0"
+description: "A reusable ESP-IDF component for Groove bme680 sensor"
+targets:
+  - esp32
+  - esp32c2
+  - esp32c3
+  - esp32c6
+  - esp32s3

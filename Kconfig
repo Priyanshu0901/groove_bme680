@@ -1,0 +1,195 @@
+menu "BME680 Sensor Configuration"
+    
+    choice BME680_INTERFACE
+        prompt "BME680 interface"
+        default BME680_INTERFACE_I2C
+        help
+            Select the interface to use for communication with BME680.
+            
+        config BME680_INTERFACE_I2C
+            bool "I2C Interface"
+            help
+                Use I2C interface to communicate with BME680.
+                
+        config BME680_INTERFACE_SPI
+            bool "SPI Interface"
+            help
+                Use SPI interface to communicate with BME680.
+    endchoice
+
+    config BME680_I2C_ADDR
+        hex "BME680 I2C Address"
+        depends on BME680_INTERFACE_I2C
+        range 0x00 0x7F
+        default 0x76
+        help
+            I2C address of the BME680 sensor.
+            The default address is 0x76 (SDO to GND).
+            The alternative address is 0x77 (SDO to VDDIO).
+
+    menu "I2C Configuration"
+        depends on BME680_INTERFACE_I2C
+
+        config BME680_I2C_PORT
+            int "I2C Port Number"
+            range 0 1
+            default 0
+            help
+                I2C port to use for BME680 communication.
+
+        config BME680_I2C_SCL_PIN
+            int "I2C SCL GPIO Pin"
+            range 0 48
+            default 22
+            help
+                GPIO pin for I2C SCL.
+
+        config BME680_I2C_SDA_PIN
+            int "I2C SDA GPIO Pin"
+            range 0 48
+            default 21
+            help
+                GPIO pin for I2C SDA.
+
+        config BME680_I2C_CLOCK_SPEED
+            int "I2C Clock Speed (Hz)"
+            range 100000 400000
+            default 400000
+            help
+                I2C clock speed for BME680 communication.
+    endmenu
+
+    menu "SPI Configuration"
+        depends on BME680_INTERFACE_SPI
+
+        config BME680_SPI_HOST
+            int "SPI Host Number"
+            range 0 2
+            default 1
+            help
+                SPI host to use for BME680 communication.
+
+        config BME680_SPI_MISO_PIN
+            int "SPI MISO GPIO Pin"
+            range 0 48
+            default 19
+            help
+                GPIO pin for SPI MISO.
+
+        config BME680_SPI_MOSI_PIN
+            int "SPI MOSI GPIO Pin"
+            range 0 48
+            default 23
+            help
+                GPIO pin for SPI MOSI.
+
+        config BME680_SPI_SCLK_PIN
+            int "SPI SCLK GPIO Pin"
+            range 0 48
+            default 18
+            help
+                GPIO pin for SPI SCLK.
+
+        config BME680_SPI_CS_PIN
+            int "SPI CS GPIO Pin"
+            range 0 48
+            default 5
+            help
+                GPIO pin for SPI CS.
+
+        config BME680_SPI_CLOCK_SPEED
+            int "SPI Clock Speed (Hz)"
+            range 100000 10000000
+            default 1000000
+            help
+                SPI clock speed for BME680 communication.
+    endmenu
+
+    config BME680_FILTER_SIZE
+        int "BME680 Filter Size"
+        range 0 7
+        default 3
+        help
+            Filter size for BME680. Higher values mean more averaging.
+            0: Filter off
+            1: 2 samples
+            2: 4 samples
+            3: 8 samples
+            4: 16 samples
+            5-7: Reserved, same as 4
+
+    choice BME680_TEMPERATURE_OVERSAMPLING
+        prompt "Temperature Oversampling"
+        default BME680_TEMPERATURE_OVERSAMPLING_2X
+        help
+            Temperature oversampling selection.
+            
+        config BME680_TEMPERATURE_OVERSAMPLING_NONE
+            bool "No oversampling"
+        config BME680_TEMPERATURE_OVERSAMPLING_1X
+            bool "1x oversampling"
+        config BME680_TEMPERATURE_OVERSAMPLING_2X
+            bool "2x oversampling"
+        config BME680_TEMPERATURE_OVERSAMPLING_4X
+            bool "4x oversampling"
+        config BME680_TEMPERATURE_OVERSAMPLING_8X
+            bool "8x oversampling"
+        config BME680_TEMPERATURE_OVERSAMPLING_16X
+            bool "16x oversampling"
+    endchoice
+
+    choice BME680_PRESSURE_OVERSAMPLING
+        prompt "Pressure Oversampling"
+        default BME680_PRESSURE_OVERSAMPLING_4X
+        help
+            Pressure oversampling selection.
+            
+        config BME680_PRESSURE_OVERSAMPLING_NONE
+            bool "No oversampling"
+        config BME680_PRESSURE_OVERSAMPLING_1X
+            bool "1x oversampling"
+        config BME680_PRESSURE_OVERSAMPLING_2X
+            bool "2x oversampling"
+        config BME680_PRESSURE_OVERSAMPLING_4X
+            bool "4x oversampling"
+        config BME680_PRESSURE_OVERSAMPLING_8X
+            bool "8x oversampling"
+        config BME680_PRESSURE_OVERSAMPLING_16X
+            bool "16x oversampling"
+    endchoice
+
+    choice BME680_HUMIDITY_OVERSAMPLING
+        prompt "Humidity Oversampling"
+        default BME680_HUMIDITY_OVERSAMPLING_1X
+        help
+            Humidity oversampling selection.
+            
+        config BME680_HUMIDITY_OVERSAMPLING_NONE
+            bool "No oversampling"
+        config BME680_HUMIDITY_OVERSAMPLING_1X
+            bool "1x oversampling"
+        config BME680_HUMIDITY_OVERSAMPLING_2X
+            bool "2x oversampling"
+        config BME680_HUMIDITY_OVERSAMPLING_4X
+            bool "4x oversampling"
+        config BME680_HUMIDITY_OVERSAMPLING_8X
+            bool "8x oversampling"
+        config BME680_HUMIDITY_OVERSAMPLING_16X
+            bool "16x oversampling"
+    endchoice
+    
+    config BME680_GAS_HEATER_TEMP
+        int "Gas Heater Temperature (°C)"
+        range 200 400
+        default 300
+        help
+            Gas heater temperature in degrees Celsius.
+            
+    config BME680_GAS_HEATER_DURATION
+        int "Gas Heater Duration (ms)"
+        range 10 1000
+        default 100
+        help
+            Gas heater duration in milliseconds.
+
+endmenu 
