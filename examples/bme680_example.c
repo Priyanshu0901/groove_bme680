@@ -29,6 +29,10 @@ void app_main(void)
         return;
     }
     
+    /* Add a delay after initialization to allow the sensor to stabilize */
+    ESP_LOGI(TAG, "BME680 initialized, waiting for sensor to stabilize...");
+    vTaskDelay(pdMS_TO_TICKS(500));
+    
     /* Read and print sensor data in a loop */
     while (1) {
         bme680_data_t data;
