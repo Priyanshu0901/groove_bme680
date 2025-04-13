@@ -237,20 +237,45 @@ esp_err_t bme680_read_data(bme680_data_t *data)
         return ret;
     }
 
+    /* Increase wait time to 3x the calculated duration plus a fixed offset */
+    duration_ms = (duration_ms * 3) + 30;
+    
     /* Wait for measurement to complete */
     dev.delay_us(duration_ms * 1000, NULL);
 
-    /* Get data */
+    /* Get data with retry mechanism */
     struct bme68x_data sensor_data[3];
     uint8_t n_data = 0;
-    rslt = bme68x_get_data(BME68X_FORCED_MODE, sensor_data, &n_data, &dev);
-    if (rslt != BME68X_OK) {
+    int max_retries = 3;
+    int retry_count = 0;
+    
+    do {
+        rslt = bme68x_get_data(BME68X_FORCED_MODE, sensor_data, &n_data, &dev);
+        
+        /* If we got no new data and haven't exceeded retries, wait and try again */
+        if (rslt == BME68X_W_NO_NEW_DATA && retry_count < max_retries) {
+            ESP_LOGW(TAG, "No new data available (retry %d/%d), waiting...", 
+                     retry_count + 1, max_retries);
+            dev.delay_us(50000, NULL); /* Wait 50ms before retry */
+            retry_count++;
+        } else {
+            break; /* Either success or different error */
+        }
+    } while (retry_count <= max_retries);
+    
+    /* Handle errors after retry attempts */
+    if (rslt != BME68X_OK && rslt != BME68X_W_NO_NEW_DATA) {
         ESP_LOGE(TAG, "Failed to get sensor data: %d", rslt);
         return ESP_FAIL;
     }
-
+    
+    /* If we still have no data after retries, return error */
     if (n_data == 0) {
-        ESP_LOGE(TAG, "No sensor data available");
+        if (rslt == BME68X_W_NO_NEW_DATA) {
+            ESP_LOGE(TAG, "No new data available after retries");
+        } else {
+            ESP_LOGE(TAG, "No sensor data available");
+        }
         return ESP_ERR_NOT_FOUND;
     }
 
