@@ -49,15 +49,18 @@ esp_err_t bme680_init(void)
         return ESP_FAIL;
     }
     
+    /* Set initialized flag before configuring to avoid invalid state error */
+    is_initialized = true;
+    
     /* Configure the sensor with default settings */
     ret = bme680_configure();
     if (ret != ESP_OK) {
         ESP_LOGE(TAG, "Failed to configure BME680 sensor: %s", esp_err_to_name(ret));
+        is_initialized = false;
         bme680_interface_deinit();
         return ret;
     }
 
-    is_initialized = true;
     ESP_LOGI(TAG, "BME680 initialized successfully");
     return ESP_OK;
 }
