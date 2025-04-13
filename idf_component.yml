@@ -1,8 +1,8 @@
-name: "Priyanshu0901/groove_bme680"
-version: "1.0.0"
+name: "Priyanshu0901/grove_bme680"
+version: "1.0.1"
 description: "ESP-IDF component for BME680 environmental sensor (temperature, pressure, humidity, gas)"
 license: "MIT"
-repository: "https://github.com/Priyanshu0901/groove_bme680.git"
+repository: "https://github.com/Priyanshu0901/grove_bme680.git"
 dependencies:
   idf: ">=5.0.0"
 targets:
